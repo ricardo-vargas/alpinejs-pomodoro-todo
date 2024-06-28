@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  input,
+  button {
+    margin: 5px 0;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  li:hover {
+    cursor: move;
+  }
+  .delete-btn,
+  .edit-btn,
+  .save-btn,
+  .select-btn,
+  .complete-btn {
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  .delete-btn {
+    background-color: #ff4d4d;
+  }
+  .edit-btn {
+    background-color: #008cba;
+  }
+  .save-btn {
+    background-color: #008cba;
+  }
+  .select-btn {
+    background-color: #ffa500;
+  }
+  .select-btn {
+    background-color: #ffa500;
+  }
+  .complete-btn {
+    background-color: #4caf50;
+  }
+  .drag-handle {
+    cursor: move;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  .dragging {
+    opacity: 0.5;
+  }
+  .edit-pomodoros {
+    width: 50px;
+  }
+  .active-task {
+    background-color: #fffacd;
+  }
+  .completed-task {
+    background-color: #bdbdbd;
+  }
+  #timer {
+    font-size: 2em;
+    margin: 20px 0;
+  }
+  #timer-controls button {
+    margin-right: 10px;
+  }
+  

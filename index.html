@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Todo List</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js"
+      defer
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.3.0/luxon.min.js"></script>
+    <script src="scripts/main.js"></script>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body x-data="todoApp()">
+    <h1>Pomodoro Todo List</h1>
+
+    <div id="timer">
+      <h2>Pomodoro Timer</h2>
+      <p x-text="formatTime(timerSeconds)"></p>
+      <div id="timer-controls">
+        <button @click="startTimer" x-show="!isTimerRunning">Start</button>
+        <button @click="pauseTimer" x-show="isTimerRunning">Pause</button>
+        <button @click="completePomodoro">Complete</button>
+        <button @click="resetTimer">Reset</button>
+      </div>
+      <p x-text="timerStatus"></p>
+      <p>
+        Total Executed Pomodoros: <span x-text="totalExecutedPomodoros"></span>
+        <button @click="resetCycles">Reset cycles</button>
+      </p>
+    </div>
+
+    <form @submit.prevent="addTask">
+      <input type="text" x-model="newTask" placeholder="Enter task" required />
+      <input
+        type="number"
+        x-model="estimatedPomodoros"
+        placeholder="Estimated Pomodoros"
+        required
+        min="1"
+      />
+      <button type="submit">Add Task</button>
+    </form>
+
+    <ul>
+      <template x-for="(task, index) in tasks" :key="task.id">
+        <li
+          draggable="true"
+          @dragstart="dragStart($event, index)"
+          @dragover.prevent
+          @dragenter.prevent
+          @drop="drop($event, index)"
+          :class="{ 'dragging': draggingIndex === index, 'active-task': activeTaskIndex === index , 'completed-task': task.isCompleted }"
+        >
+          <span class="drag-handle">☰</span>
+          <div>
+            <span x-text="`${index + 1}. ${task.name}`"></span>
+            <template x-if="!task.editing">
+              <span
+                x-text="` (${task.estimatedPomodoros} pomodoro${task.estimatedPomodoros > 1 ? 's' : ''}, ${task.completedPomodoros} completed, ${task.estimatedMinutes} minutes)`"
+              ></span>
+            </template>
+            <template x-if="task.editing">
+              <input
+                type="number"
+                x-model="task.editPomodoros"
+                class="edit-pomodoros"
+                min="1"
+              />
+            </template>
+            <br />
+            <small
+              x-text="`Start: ${task.startTime} - End: ${task.endTime}`"
+            ></small>
+          </div>
+          <div>
+            <template x-if="!task.editing">
+              <button @click="editTask(index)" class="edit-btn">Edit</button>
+            </template>
+            <template x-if="task.editing">
+              <button @click="saveTask(index)" class="save-btn">Save</button>
+            </template>
+            <button @click="deleteTask(index)" class="delete-btn">
+              Delete
+            </button>
+            <button
+              @click="selectTask(index)"
+              class="select-btn"
+              x-show="activeTaskIndex !== index"
+            >
+              Select
+            </button>
+            <button
+              x-if="!task.isCompleted && activeTaskIndex === index"
+              @click="completeTask(index)"
+              class="complete-btn"
+            >
+              Complete
+            </button>
+          </div>
+        </li>
+      </template>
+    </ul>
+
+    <div x-show="tasks.length > 0">
+      <h3>Total Time:</h3>
+      <p x-text="totalTime"></p>
+      <p x-text="estimatedCompletion"></p>
+    </div>
+
+    <p>Sourde Code : <a target="_blank" href="https://github.com/ricardo-vargas/alpinejs-pomodoro-todo">https://github.com/ricardo-vargas/alpinejs-pomodoro-todo</a></p>
+  </body>
+</html>
